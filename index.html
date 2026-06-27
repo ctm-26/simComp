@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>CyberSim - block-based cyber defense sandbox</title>
+<style>
+  :root { --bg:#0d1117; --panel:#161b22; --line:#30363d; --txt:#c9d1d9;
+          --accent:#58a6ff; --bad:#f85149; --ok:#3fb950; --warn:#d29922; }
+  * { box-sizing: border-box; }
+  body { margin:0; font-family: ui-monospace, "SFMono-Regular", Menlo, monospace;
+         background:var(--bg); color:var(--txt); }
+  header { padding:16px 20px; border-bottom:1px solid var(--line); }
+  header h1 { margin:0; font-size:18px; color:var(--accent); }
+  header p { margin:4px 0 0; font-size:12px; color:#8b949e; }
+  .wrap { display:flex; gap:16px; padding:16px; flex-wrap:wrap; }
+  .panel { background:var(--panel); border:1px solid var(--line); border-radius:8px;
+           padding:14px; flex:1; min-width:280px; }
+  h2 { font-size:13px; text-transform:uppercase; letter-spacing:.05em; color:#8b949e; margin:0 0 10px; }
+  .palette button { display:block; width:100%; text-align:left; margin:4px 0; padding:8px 10px;
+           background:#21262d; color:var(--txt); border:1px solid var(--line); border-radius:6px;
+           cursor:pointer; font-family:inherit; font-size:13px; }
+  .palette button:hover { border-color:var(--accent); }
+  .palette small { color:#8b949e; display:block; font-size:11px; margin-top:2px; }
+  #program { min-height:120px; }
+  .chip { display:inline-flex; align-items:center; gap:6px; margin:3px; padding:5px 9px;
+          background:#21262d; border:1px solid var(--line); border-radius:6px; font-size:13px; }
+  .chip span { cursor:pointer; color:var(--bad); font-weight:bold; }
+  .controls { margin-top:10px; display:flex; gap:8px; flex-wrap:wrap; }
+  .controls button { padding:8px 14px; border-radius:6px; border:1px solid var(--line);
+          background:#21262d; color:var(--txt); cursor:pointer; font-family:inherit; }
+  #runBtn { background:var(--accent); color:#0d1117; border-color:var(--accent); font-weight:bold; }
+  .net { display:flex; flex-wrap:wrap; gap:10px; }
+  .nodebox { width:78px; height:64px; border-radius:8px; border:1px solid var(--line);
+          display:flex; flex-direction:column; align-items:center; justify-content:center;
+          font-size:12px; background:#21262d; }
+  .nodebox.infected { background:#3d1418; border-color:var(--bad); }
+  .nodebox.patched { border-color:var(--ok); }
+  .nodebox.quarantined { border-color:var(--warn); opacity:.6; }
+  .nodebox b { font-size:13px; }
+  .nodebox em { font-style:normal; font-size:10px; color:#8b949e; }
+  pre#log { background:#010409; border:1px solid var(--line); border-radius:6px; padding:10px;
+          font-size:12px; max-height:260px; overflow:auto; white-space:pre-wrap; }
+  .legend { font-size:11px; color:#8b949e; margin-top:8px; }
+  .legend i { font-style:normal; padding:1px 6px; border-radius:4px; }
+</style>
+</head>
+<body>
+<header>
+  <h1>CyberSim</h1>
+  <p>A sandboxed, educational simulation. Nothing here touches a real machine,
+     filesystem, or network - every "node" and "file" is a fake in-memory object.</p>
+</header>
+<div class="wrap">
+  <div class="panel" style="max-width:300px">
+    <h2>Blocks</h2>
+    <div class="palette" id="palette"></div>
+  </div>
+  <div class="panel">
+    <h2>Your program</h2>
+    <div id="program"></div>
+    <div class="controls">
+      <button id="runBtn">Run simulation</button>
+      <button id="clearBtn">Clear</button>
+      <button id="quarBtn">Toggle defender quarantine (pc-2)</button>
+    </div>
+    <div class="legend">
+      <i style="background:#3d1418">infected</i>
+      <i style="border:1px solid var(--ok)">patched</i>
+      <i style="border:1px solid var(--warn)">quarantined</i>
+    </div>
+  </div>
+</div>
+<div class="wrap">
+  <div class="panel">
+    <h2>Network</h2>
+    <div class="net" id="net"></div>
+  </div>
+  <div class="panel">
+    <h2>Run log</h2>
+    <pre id="log">Build a program from the blocks, then press "Run simulation".</pre>
+  </div>
+</div>
+<script src="engine.js"></script>
+<script src="ui.js"></script>
+</body>
+</html>
